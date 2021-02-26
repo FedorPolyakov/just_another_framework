@@ -26,3 +26,9 @@ class ContactView:
                   f'with title - {title} '
                   f'with text - {text}')
         return '200 OK', render('contact.html')
+
+
+class CSSView:
+    def __call__(self, request):
+        print('css!')
+        return '222 OK', render('style.css', template_folder='./static/')

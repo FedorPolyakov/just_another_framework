@@ -45,8 +45,9 @@ class MyFramework:
     def __call__(self, environ, start_response):
         setup_testing_defaults(environ)
 
-        # print(environ)
+        print(environ)
         path = environ['PATH_INFO']
+        print(f'PATH_INFO - {path}')
         query = environ['QUERY_STRING']
         method = environ['REQUEST_METHOD']
         request_params = self.parse_input_data(query)
@@ -58,7 +59,6 @@ class MyFramework:
             pass
         elif f'{path}/' in self.routes:
             path = f'{path}/'
-        # print(path)
         request = {}
         if path in self.routes:
             view = self.routes[path]
@@ -69,14 +69,15 @@ class MyFramework:
             for front in self.front_controllers:
                 front(request)
             code, body = view(request)
-            start_response(code, [('Content-Type', 'text/html')])
-            return [body.encode('utf-8')]
         else:
             view = PageNotFound()
             code, body = view(request)
+        print(f'code - {code}')
+        if code == '222 OK':
+            start_response(code, [('Content-Type', 'text/css')])
+        else:
             start_response(code, [('Content-Type', 'text/html')])
-            return [body.encode('utf-8')]
-
+        return [body.encode('utf-8')]
 
 
 

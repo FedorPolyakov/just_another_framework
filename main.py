@@ -6,6 +6,7 @@ routes = {
     '/': views.IndexView(),
     '/about/': views.AboutView(),
     '/contact/': views.ContactView(),
+    '/static/style.css/': views.CSSView(),
 }
 
 
