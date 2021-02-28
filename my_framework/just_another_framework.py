@@ -11,6 +11,12 @@ class PageNotFound:
 
 class MyFramework:
 
+    def add_url(self, url):
+        #wrapper
+        def wrapper(view):
+            self.routes[url] = view
+        return wrapper
+
     def change_bytes2str(self, data):
         data_b = bytes(data.replace('%', '=').replace("+", " "), 'UTF-8')
         data_str = quopri.decodestring(data_b)
@@ -45,9 +51,9 @@ class MyFramework:
     def __call__(self, environ, start_response):
         setup_testing_defaults(environ)
 
-        print(environ)
+        # print(environ)
         path = environ['PATH_INFO']
-        print(f'PATH_INFO - {path}')
+        # print(f'PATH_INFO - {path}')
         query = environ['QUERY_STRING']
         method = environ['REQUEST_METHOD']
         request_params = self.parse_input_data(query)
@@ -72,7 +78,7 @@ class MyFramework:
         else:
             view = PageNotFound()
             code, body = view(request)
-        print(f'code - {code}')
+        # print(f'code - {code}')
         if code == '222 OK':
             start_response(code, [('Content-Type', 'text/css')])
         else:
