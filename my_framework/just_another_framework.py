@@ -11,12 +11,6 @@ class PageNotFound:
 
 class MyFramework:
 
-    def add_url(self, url):
-        #wrapper
-        def wrapper(view):
-            self.routes[url] = view
-        return wrapper
-
     def change_bytes2str(self, data):
         data_b = bytes(data.replace('%', '=').replace("+", " "), 'UTF-8')
         data_str = quopri.decodestring(data_b)

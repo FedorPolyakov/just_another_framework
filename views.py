@@ -1,31 +1,43 @@
 from my_framework.render import render
-from logger import Logger
+from logger import Logger, Debug
 from models import SiteInterface
 from my_framework.just_another_framework import MyFramework
 
 
+def add_url(url):
+    # wrapper
+    def wrapper(view):
+        routes[url] = view()
+    return wrapper
+
+
+routes = {}
 site = SiteInterface()
 log = Logger('views')
 
 
+@add_url('/static/style.css/')
 class CSSView:
     def __call__(self, request):
         return '222 OK', render('style.css', template_folder='./static/')
 
 
 # my page_controller
+@add_url('/')
 class IndexView:
     def __call__(self, request):
         print(request)
         return '200 OK', render('index.html')
 
 
+@add_url('/about/')
 class AboutView:
     def __call__(self, request):
         print(request)
         return '200 OK', render('about.html')
 
 
+@add_url('/contact/')
 class ContactView:
     def __call__(self, request):
         print(request)
@@ -40,6 +52,7 @@ class ContactView:
         return '200 OK', render('contact.html')
 
 
+@add_url('/course_list/')
 class CourseListView:
     def __call__(self, request):
         log.log('List of training courses')
@@ -47,6 +60,7 @@ class CourseListView:
         return '200 OK', render('course_list.html', objects_list=site.training_courses)
 
 
+@add_url('/create_course/')
 class CreateCourseView:
     def __call__(self, request):
         if request['method'] == 'POST':
@@ -63,6 +77,7 @@ class CreateCourseView:
             return '200 OK', render('create_course.html', categories=site.categories)
 
 
+@add_url('/create_category/')
 class CreateCategoryView:
     def __call__(self, request):
         if request['method'] == 'POST':
@@ -80,6 +95,7 @@ class CreateCategoryView:
             return '200 OK', render('create_category.html', categories=site.categories)
 
 
+@add_url('/copy_course/')
 class CopyCourseView:
     def __call__(self, request):
         params = request['request_params']
@@ -94,6 +110,7 @@ class CopyCourseView:
         return '200 OK', render('course_list.html', objects_list=site.training_courses)
 
 
+@add_url('/category_list/')
 class CategoryListView:
     def __call__(self, request):
         log.log('List of categories')

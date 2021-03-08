@@ -13,12 +13,12 @@ class Logger(metaclass=Singletone):
               f':{gmtime().tm_min}:{gmtime().tm_sec} -> {text}')
 
 #
-# class Debug:
-#     def __call__(self, func):
-#         def decorated(*args, **kwargs):
-#             start = time()
-#             wrap = func(*args, **kwargs)
-#             end = time()
-#             print(f'DEBUG -> {func.__name__}, {end - start}')
-#             return wrap
-#         return decorated
+class Debug:
+    def __call__(self, func):
+        def decorated(*args, **kwargs):
+            start = time()
+            wrap = func(*args, **kwargs)
+            end = time()
+            print(f'DEBUG -> {func.__name__}, {end - start}')
+            return wrap
+        return decorated
